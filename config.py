@@ -20,7 +20,10 @@ class Config:
     CACHE_DIR = CONFIG_DIR / 'cache'
     LOG_DIR = CONFIG_DIR / 'logs'
     EXPORT_DIR = CONFIG_DIR / 'exports'
-    CONFIG_FILE = Path(__file__).parent.parent / 'config.yaml'
+    REPORT_DIR = CONFIG_DIR / 'reports'
+    
+    PROJECT_DIR = Path(__file__).parent  
+    CONFIG_FILE = PROJECT_DIR / 'config.yaml'
     
     # Defaults
     DEFAULTS = {
@@ -59,7 +62,12 @@ class Config:
     
     def __init__(self, config_file: Optional[str] = None):
         """Initialiser la configuration"""
-        self.config_file = config_file or self.CONFIG_FILE
+        # Utiliser le fichier fourni ou celui par défaut dans le projet
+        if config_file:
+            self.config_file = Path(config_file)
+        else:
+            self.config_file = self.CONFIG_FILE
+            
         self.config = self.DEFAULTS.copy()
         self._setup_directories()
         self._load_config()
@@ -71,6 +79,7 @@ class Config:
             self.CACHE_DIR.mkdir(parents=True, exist_ok=True)
             self.LOG_DIR.mkdir(parents=True, exist_ok=True)
             self.EXPORT_DIR.mkdir(parents=True, exist_ok=True)
+            self.REPORT_DIR.mkdir(parents=True, exist_ok=True)
             logger.debug(f"Répertoires créés: {self.CONFIG_DIR}")
         except Exception as e:
             logger.error(f"Erreur création répertoires: {e}")
@@ -78,15 +87,29 @@ class Config:
     def _load_config(self):
         """Charger la configuration depuis YAML"""
         try:
+            # Afficher le chemin pour debug
+            logger.debug(f"Recherche du fichier config dans: {self.config_file}")
+            
             if self.config_file.exists():
                 with open(self.config_file, 'r', encoding='utf-8') as f:
                     yaml_config = yaml.safe_load(f) or {}
                     self._merge_config(yaml_config)
-                logger.debug(f"Configuration chargée: {self.config_file}")
+                logger.info(f"Configuration chargée depuis: {self.config_file}")
             else:
-                logger.warning(f"Fichier config non trouvé: {self.config_file}")
+                # Si le fichier n'existe pas, essayer dans le répertoire courant
+                alternative_path = Path.cwd() / 'config.yaml'
+                if alternative_path.exists():
+                    self.config_file = alternative_path
+                    with open(self.config_file, 'r', encoding='utf-8') as f:
+                        yaml_config = yaml.safe_load(f) or {}
+                        self._merge_config(yaml_config)
+                    logger.info(f"Configuration chargée depuis: {self.config_file}")
+                else:
+                    logger.warning(f"Fichier config non trouvé dans: {self.config_file} ou {alternative_path}")
+                    logger.info("Utilisation de la configuration par défaut")
         except Exception as e:
             logger.error(f"Erreur chargement config: {e}")
+            logger.info("Utilisation de la configuration par défaut")
     
     def _merge_config(self, yaml_config: Dict[str, Any]):
         """Fusionner configuration YAML avec defaults"""
@@ -220,6 +243,13 @@ class OutputConfig:
     @property
     def show_breaches(self) -> bool:
         return self.config.get('output.show_breaches', True)
+    
+    @property
+    def export_dir(self) -> Path:
+        export_dir = self.config.get('output.export_dir')
+        if export_dir:
+            return Path(export_dir).expanduser()
+        return Config.EXPORT_DIR
 
 
 # Instance globale de configuration
@@ -246,9 +276,14 @@ def get_output_config() -> OutputConfig:
 
 # Exemple d'utilisation
 if __name__ == '__main__':
+    # Pour debug
+    logging.basicConfig(level=logging.DEBUG)
+    
     config = get_config()
     
-    print("Configuration Raven Trace:")
+    print(f"Fichier config utilisé: {config.config_file}")
+    print(f"Fichier existe: {config.config_file.exists()}")
+    print("\nConfiguration Raven Trace:")
     print(config.to_yaml())
     
     # Accès aux valeurs
