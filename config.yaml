@@ -1,0 +1,185 @@
+# ╔════════════════════════════════════════════════════════════════╗
+# ║                  RAVEN TRACE - Configuration                    ║
+# ╚════════════════════════════════════════════════════════════════╝
+
+# Application Settings
+app:
+  name: "Raven Trace"
+  version: "1.0.0"
+  debug: false
+  verbose: true
+
+# Search Engine Configuration
+search:
+  # Timeout pour les requêtes HTTP (secondes)
+  timeout: 10
+  
+  # Nombre de workers parallèles
+  workers: 5
+  
+  # Rotation User-Agent
+  rotate_user_agent: true
+  
+  # Rate limiting (requêtes/minute)
+  rate_limit: 30
+  
+  # Deep scan par défaut
+  deep_scan_default: false
+
+# Cache Configuration
+cache:
+  # Dossier cache
+  directory: "~/.raven_trace/cache"
+  
+  # TTL par défaut (heures)
+  ttl_hours: 25
+  
+  # Nettoyer automatiquement les vieilles entrées
+  auto_cleanup: true
+  
+  # Jours avant suppression
+  cleanup_days: 7
+
+# Logging Configuration
+logging:
+  # Niveau: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: "INFO"
+  
+  # Format logs
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # Fichier log
+  file: "~/.raven_trace/logs/raven_trace.log"
+  
+  # Rotation logs
+  rotate_on_size: 10485760  # 10 MB
+  backup_count: 5
+
+# API Keys (optionnel - laisser vide si non utilisé)
+apis:
+  # Have I Been Pwned
+  hibp_api_key: ""
+  
+  # Hunter.io
+  hunter_api_key: ""
+  
+  # LeakCheck
+  leakcheck_api_key: ""
+  
+  # VirusTotal
+  virustotal_api_key: ""
+  
+  # Clearbit
+  clearbit_api_key: ""
+  
+  # AbuseIPDB
+  abuseipdb_api_key: ""
+  
+  # Shodan
+  shodan_api_key: ""
+
+# Sources to Enable/Disable
+sources:
+  email:
+    # Email Reputation
+    emailrep: true
+    hunter: true
+    abuseipdb: false
+    
+    # Data Brokers
+    spokeo: true
+    whitepages: true
+    radaris: true
+    
+    # DNS & Mail
+    dns_records: true
+    smtp_verification: false
+    
+    # Social Media
+    social_profiles: true
+  
+  phone:
+    # Carrier Info
+    carrier_lookup: true
+    
+    # Reputation
+    truecaller: true
+    reverse_phone: true
+    
+    # Data Brokers
+    whitepages: true
+    spokeo: true
+    
+    # Social Media
+    social_profiles: true
+  
+  username:
+    # Social Media
+    twitter: true
+    instagram: true
+    facebook: true
+    tiktok: true
+    youtube: true
+    reddit: true
+    snapchat: true
+    twitch: true
+    pinterest: true
+    
+    # Coding
+    github: true
+    gitlab: true
+    stackoverflow: true
+    
+    # Gaming
+    steam: true
+    discord: true
+    
+    # Forums
+    medium: true
+    discourse: true
+    
+    # Aggregators
+    sherlock: true
+    namechk: true
+
+# Output Configuration
+output:
+  # Format: table, json, csv
+  default_format: "table"
+  
+  # Dossier exports
+  export_dir: "~/.raven_trace/exports"
+  
+  # Afficher la confiance
+  show_confidence: true
+  
+  # Afficher les fuites
+  show_breaches: true
+  
+  # Afficher les URLs
+  show_urls: true
+
+# Security & Privacy
+security:
+  # Proxy (optionnel)
+  proxy: ""
+  
+  # SSL verification
+  verify_ssl: true
+  
+  # Mask email dans logs
+  mask_sensitive: true
+
+# Advanced Options
+advanced:
+  # Scraping avancé avec Selenium
+  use_selenium: false
+  
+  # JavaScript rendering
+  render_js: false
+  
+  # TOR support
+  use_tor: false
+  
+  # Machine Learning scoring
+  ml_scoring: false
