@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 Setup.py - Installation du projet Raven Trace
+Version corrigée pour la structure actuelle
 """
 
 from setuptools import setup, find_packages
@@ -23,13 +24,23 @@ if requirements_file.exists():
 setup(
     name="raven-trace",
     version="1.0.0",
-    author="Your Name",
-    author_email="your.email@example.com",
+    author="Samy - Nyx",
+    author_email="Samy.bensalem@etik.com",
     description="Advanced OSINT Intelligence Tool - Email, Phone, Username Reconnaissance",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/your-repo/raven-trace",
-    packages=find_packages(),
+    packages=[
+        '',
+        'cli',
+        'core', 
+        'modules',
+        'sources',
+        'storage',
+        'utils',
+        'tests'
+    ],
+    package_dir={'': '.'},
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
@@ -45,7 +56,7 @@ setup(
     install_requires=install_requires,
     entry_points={
         "console_scripts": [
-            "raven-trace=raven_trace.main:cli",
+            "raven-trace=main:cli",
         ],
     },
     include_package_data=True,

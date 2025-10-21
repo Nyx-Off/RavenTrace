@@ -7,7 +7,7 @@ import requests
 import logging
 from typing import Dict, List, Any
 from bs4 import BeautifulSoup
-from raven_trace.utils.helpers import get_random_user_agent
+from utils.helpers import get_random_user_agent
 
 logger = logging.getLogger(__name__)
 

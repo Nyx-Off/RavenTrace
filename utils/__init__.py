@@ -2,14 +2,14 @@
 Utils module - Utilitaires généraux
 """
 
-from raven_trace.utils.formatter import (
+from utils.formatter import (
     format_results,
     create_results_table,
     export_json,
     export_csv,
 )
-from raven_trace.utils.logger import setup_logging, get_logger
-from raven_trace.utils.helpers import (
+from utils.logger import setup_logging, get_logger
+from utils.helpers import (
     get_random_user_agent,
     sanitize_string,
     is_valid_email_format,

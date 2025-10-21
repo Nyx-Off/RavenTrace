@@ -2,8 +2,8 @@
 Core module - Engine et logique principale
 """
 
-from raven_trace.core.engine import SearchEngine
-from raven_trace.core.validators import (
+from core.engine import SearchEngine
+from core.validators import (
     validate_email,
     validate_phone,
     validate_username,

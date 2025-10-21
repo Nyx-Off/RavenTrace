@@ -2,7 +2,7 @@
 CLI module - Interface en ligne de commande
 """
 
-from raven_trace.cli.interface import (
+from cli.interface import (
     show_banner,
     show_menu,
     get_search_mode,

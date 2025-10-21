@@ -20,7 +20,7 @@ class CacheDB:
         if db_path is None:
             cache_dir = Path.home() / '.raven_trace' / 'cache'
             cache_dir.mkdir(parents=True, exist_ok=True)
-            db_path = cache_dir / 'raven_trace.db'
+            db_path = cache_dir / 'db'
         
         self.db_path = db_path
         self.init_db()

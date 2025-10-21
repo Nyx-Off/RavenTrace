@@ -24,7 +24,7 @@ def setup_logging(log_level=logging.DEBUG):
     log_dir = Path.home() / '.raven_trace' / 'logs'
     log_dir.mkdir(parents=True, exist_ok=True)
     
-    log_file = log_dir / 'raven_trace.log'
+    log_file = log_dir / 'log'
     
     log_format = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - [%(funcName)s:%(lineno)d] - %(message)s',

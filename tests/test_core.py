@@ -10,12 +10,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from raven_trace.core.validators import (
+from core.validators import (
     validate_email, validate_phone, validate_username,
     normalize_email, normalize_phone, normalize_username
 )
-from raven_trace.core.engine import SearchEngine
-from raven_trace.utils.helpers import (
+from core.engine import SearchEngine
+from utils.helpers import (
     is_valid_email_format, extract_domain, hash_string,
     is_phone_like, is_url
 )

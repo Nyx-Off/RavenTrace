@@ -9,11 +9,11 @@ from typing import Dict, List, Any
 import logging
 from datetime import datetime
 
-from raven_trace.modules.email_lookup import EmailLookup
-from raven_trace.modules.phone_lookup import PhoneLookup
-from raven_trace.modules.username_lookup import UsernameLookup
-from raven_trace.core.validators import validate_email, validate_phone, validate_username
-from raven_trace.storage.database import CacheDB
+from modules.email_lookup import EmailLookup
+from modules.phone_lookup import PhoneLookup
+from modules.username_lookup import UsernameLookup
+from core.validators import validate_email, validate_phone, validate_username
+from storage.database import CacheDB
 
 logger = logging.getLogger(__name__)
 
@@ -331,7 +331,7 @@ class SearchEngine:
     
     def export_results(self, results: Dict[str, Any], format_type: str = 'json', filepath: str = None) -> None:
         """Exporter les résultats"""
-        from raven_trace.utils.formatter import export_json, export_csv, export_html
+        from utils.formatter import export_json, export_csv, export_html
         
         if filepath is None:
             from pathlib import Path

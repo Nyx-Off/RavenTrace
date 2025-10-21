@@ -34,7 +34,7 @@ def show_banner():
 
 def setup_logging():
     """Configurer le logging"""
-    from raven_trace.utils.logger import setup_logging as _setup
+    from utils.logger import setup_logging as _setup
     return _setup()
 
 def show_menu():
@@ -177,7 +177,7 @@ def show_config_menu():
 
 def show_history():
     """Afficher l'historique des recherches"""
-    from raven_trace.storage.database import CacheDB
+    from storage.database import CacheDB
     
     console.print("\n[bold cyan]📊 HISTORIQUE[/bold cyan]\n")
     

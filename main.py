@@ -15,15 +15,15 @@ from datetime import datetime
 from typing import Dict, Optional
 
 # Import des modules locaux
-from raven_trace.core.engine import SearchEngine
-from raven_trace.cli.interface import (
+from core.engine import SearchEngine
+from cli.interface import (
     show_banner, setup_logging, show_help, show_menu,
     search_email_interactive, search_phone_interactive, 
     search_username_interactive, show_config_menu, show_history,
     show_success, show_error, show_warning, show_info,
     show_results_table, confirm_action
 )
-from raven_trace.utils.formatter import (
+from utils.formatter import (
     format_results, create_results_table, export_html, 
     export_json, export_csv
 )
@@ -263,7 +263,7 @@ def interactive(query: Optional[str]) -> None:
 @cli.command()
 def info() -> None:
     """Afficher les informations du système"""
-    from raven_trace.config import get_config, get_cache_config
+    from config import get_config, get_cache_config
     
     config = get_config()
     cache_config = get_cache_config()
@@ -296,7 +296,7 @@ def clear_cache() -> None:
 @cli.command()
 def show_config() -> None:
     """Afficher la configuration"""
-    from raven_trace.config import get_config
+    from config import get_config
     
     config = get_config()
     
