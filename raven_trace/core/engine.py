@@ -1,39 +1,36 @@
 #!/usr/bin/env python3
 """
-SearchEngine - Moteur central de recherche OSINT
-Agrège les données de multiples sources
+SearchEngine - Moteur central de recherche OSINT amélioré
+Résultats réels des APIs publiques
 """
 
-import asyncio
 from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, List, Any
 import logging
 
 from raven_trace.modules.email_lookup import EmailLookup
-from raven_trace.modules.phone_lookup import PhoneLookup
 from raven_trace.modules.username_lookup import UsernameLookup
-from raven_trace.modules.breaches import BreachChecker
-from raven_trace.core.validators import validate_email, validate_phone, validate_username
+from raven_trace.core.validators import validate_email, validate_username
 from raven_trace.storage.database import CacheDB
 
 logger = logging.getLogger(__name__)
 
 class SearchEngine:
+    """Moteur de recherche OSINT avec résultats concrets"""
+    
     def __init__(self):
         self.email_lookup = EmailLookup()
-        self.phone_lookup = PhoneLookup()
         self.username_lookup = UsernameLookup()
-        self.breach_checker = BreachChecker()
         self.cache = CacheDB()
         self.executor = ThreadPoolExecutor(max_workers=5)
     
     def search_email(self, email: str, deep_scan: bool = False) -> Dict[str, Any]:
-        """Recherche agrégée par email"""
+        """Recherche complète par email"""
         if not validate_email(email):
             logger.error(f"Email invalide: {email}")
-            return {"error": "Email invalide"}
+            return {"error": "Email invalide", "email": email}
         
-        # Vérifier le cache
+        # Vérifier cache
         cached = self.cache.get_email(email)
         if cached and not deep_scan:
             logger.info(f"Résultat du cache pour {email}")
@@ -43,22 +40,57 @@ class SearchEngine:
             "email": email,
             "sources": {},
             "breaches": [],
-            "confidence": 0
+            "reputation": {},
+            "dns": {},
+            "domain": {},
+            "social_profiles": [],
+            "confidence": 0,
+            "search_time": None,
+            "timestamp": None
         }
         
         try:
-            # Recherche parallèle sur multiples sources
-            results["sources"]["email_reputation"] = self.email_lookup.check_reputation(email)
-            results["sources"]["dns_records"] = self.email_lookup.check_dns(email)
-            results["sources"]["data_aggregators"] = self.email_lookup.search_data_brokers(email)
-            results["breaches"] = self.breach_checker.check_breaches(email)
-            results["sources"]["social_profiles"] = self.email_lookup.search_social(email)
+            # Recherche parallèle
+            logger.info(f"Démarrage recherche email: {email}")
             
-            # Calculer la confiance
+            # 1. Réputation
+            logger.debug("Vérification réputation...")
+            results["reputation"] = self.email_lookup.check_reputation(email)
+            
+            # 2. DNS Records
+            logger.debug("Vérification DNS...")
+            results["dns"] = self.email_lookup.check_dns(email)
+            
+            # 3. Fuites de données
+            logger.debug("Vérification fuites...")
+            results["breaches"] = self.email_lookup.check_breaches(email)
+            
+            # 4. Vérification domaine
+            logger.debug("Vérification domaine...")
+            results["domain"] = self.email_lookup.verify_domain_registration(email)
+            
+            # 5. Profils sociaux
+            logger.debug("Recherche profils sociaux...")
+            results["social_profiles"] = self.email_lookup.search_social_profiles(email)
+            
+            # Agrégation des résultats
+            results["sources"] = {
+                "reputation": results["reputation"],
+                "dns_records": results["dns"],
+                "breaches": results["breaches"],
+                "social_profiles": results["social_profiles"],
+                "domain_info": results["domain"]
+            }
+            
+            # Calculer confiance
             results["confidence"] = self._calculate_confidence(results)
             
             # Mettre en cache
+            from datetime import datetime
+            results["timestamp"] = datetime.now().isoformat()
             self.cache.save_email(email, results)
+            
+            logger.info(f"Recherche email terminée: {email} - Confiance: {results['confidence']}%")
             
         except Exception as e:
             logger.error(f"Erreur recherche email: {e}")
@@ -66,64 +98,82 @@ class SearchEngine:
         
         return results
     
-    def search_phone(self, phone: str, country: str = None, deep_scan: bool = False) -> Dict[str, Any]:
-        """Recherche agrégée par téléphone"""
-        if not validate_phone(phone, country):
-            logger.error(f"Téléphone invalide: {phone}")
-            return {"error": "Téléphone invalide"}
-        
-        cached = self.cache.get_phone(phone)
-        if cached and not deep_scan:
-            return cached
-        
-        results = {
-            "phone": phone,
-            "country": country,
-            "sources": {},
-            "confidence": 0
-        }
-        
-        try:
-            results["sources"]["carrier_info"] = self.phone_lookup.get_carrier_info(phone)
-            results["sources"]["location"] = self.phone_lookup.get_location(phone, country)
-            results["sources"]["reputation"] = self.phone_lookup.check_reputation(phone)
-            results["sources"]["data_aggregators"] = self.phone_lookup.search_data_brokers(phone)
-            results["sources"]["social_profiles"] = self.phone_lookup.search_social(phone)
-            
-            results["confidence"] = self._calculate_confidence(results)
-            self.cache.save_phone(phone, results)
-            
-        except Exception as e:
-            logger.error(f"Erreur recherche phone: {e}")
-            results["error"] = str(e)
-        
-        return results
-    
     def search_username(self, username: str, deep_scan: bool = False) -> Dict[str, Any]:
-        """Recherche agrégée par pseudo"""
+        """Recherche complète par pseudo"""
         if not validate_username(username):
             logger.error(f"Username invalide: {username}")
-            return {"error": "Username invalide"}
+            return {"error": "Username invalide", "username": username}
         
+        # Vérifier cache
         cached = self.cache.get_username(username)
         if cached and not deep_scan:
+            logger.info(f"Résultat du cache pour {username}")
             return cached
         
         results = {
             "username": username,
             "sources": {},
-            "confidence": 0
+            "social_media": [],
+            "code_repositories": [],
+            "forums": [],
+            "confidence": 0,
+            "profiles_found": 0,
+            "timestamp": None
         }
         
         try:
-            results["sources"]["social_media"] = self.username_lookup.search_all_platforms(username)
-            results["sources"]["forums"] = self.username_lookup.search_forums(username)
-            results["sources"]["code_repos"] = self.username_lookup.search_github_gitlab(username)
-            results["sources"]["gaming"] = self.username_lookup.search_gaming_platforms(username)
-            results["sources"]["aggregators"] = self.username_lookup.search_aggregators(username)
+            logger.info(f"Démarrage recherche username: {username}")
             
+            # 1. Réseaux sociaux
+            logger.debug("Recherche réseaux sociaux...")
+            social_results = self.username_lookup.search_all_platforms(username)
+            results["social_media"] = social_results
+            
+            # 2. Dépôts de code
+            logger.debug("Recherche dépôts code...")
+            github_result = self.username_lookup.search_github_advanced(username)
+            if github_result.get('found'):
+                results["code_repositories"].append(github_result)
+                logger.info(f"Profil GitHub trouvé: {github_result.get('followers')} followers")
+            
+            # 3. Forums
+            logger.debug("Recherche forums...")
+            forum_results = self.username_lookup.search_forums(username)
+            results["forums"] = forum_results
+            
+            # 4. Reddit
+            logger.debug("Recherche Reddit...")
+            reddit_result = self.username_lookup.search_reddit_advanced(username)
+            if reddit_result.get('found'):
+                results["code_repositories"].append(reddit_result)
+                logger.info(f"Profil Reddit trouvé: {reddit_result.get('link_karma')} karma")
+            
+            # Compter les profils trouvés
+            found_count = sum(1 for p in social_results if p.get('found'))
+            found_count += sum(1 for p in forum_results if p.get('found'))
+            if github_result.get('found'):
+                found_count += 1
+            if reddit_result.get('found'):
+                found_count += 1
+            
+            results["profiles_found"] = found_count
+            
+            # Agrégation
+            results["sources"] = {
+                "social_media": [p for p in social_results if p.get('found')],
+                "code_repositories": [p for p in results["code_repositories"] if p.get('found')],
+                "forums": [p for p in forum_results if p.get('found')],
+            }
+            
+            # Calculer confiance
             results["confidence"] = self._calculate_confidence(results)
+            
+            # Mettre en cache
+            from datetime import datetime
+            results["timestamp"] = datetime.now().isoformat()
             self.cache.save_username(username, results)
+            
+            logger.info(f"Recherche username terminée: {username} - {found_count} profils trouvés")
             
         except Exception as e:
             logger.error(f"Erreur recherche username: {e}")
@@ -133,20 +183,27 @@ class SearchEngine:
     
     def _calculate_confidence(self, results: Dict) -> float:
         """Calcule le score de confiance des résultats"""
+        if "sources" not in results:
+            return 0.0
+        
         total_sources = 0
         found_sources = 0
         
         for source_type, data in results.get("sources", {}).items():
             if isinstance(data, list):
-                total_sources += 1
-                if data and len(data) > 0:
+                if len(data) > 0:
+                    total_sources += 1
                     found_sources += 1
+                else:
+                    total_sources += 1
             elif isinstance(data, dict):
-                total_sources += 1
-                if data and len(data) > 0:
+                if len(data) > 0 and data.get('found') is not False:
+                    total_sources += 1
                     found_sources += 1
+                else:
+                    total_sources += 1
         
         if total_sources == 0:
             return 0.0
         
-        return round((found_sources / total_sources) * 100, 2)
+        return round((found_sources / total_sources) * 100, 1)

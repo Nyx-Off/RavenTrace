@@ -148,4 +148,6 @@ class PhoneLookup:
                     'type': 'social_media'
                 })
         except Exception as e:
-            logger.
+            logger.debug(f"Social search erreur: {e}")
+        
+        return profiles

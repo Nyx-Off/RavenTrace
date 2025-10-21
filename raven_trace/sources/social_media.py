@@ -147,4 +147,13 @@ class SocialMediaSearcher:
             
             try:
                 resp = requests.head(url, headers=self.headers, timeout=5)
-                result['reachable'] = resp.status_code <
+                result['reachable'] = resp.status_code < 400
+            except:
+                pass
+            
+            results.append(result)
+        
+        return results
+
+# Instance global
+social_media_searcher = SocialMediaSearcher()
