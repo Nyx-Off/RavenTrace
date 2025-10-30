@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![RavenTrace Logo](https://img.shields.io/badge/RavenTrace-v1.0.0-purple?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTEyIDJjNS41MjMgMCAxMCA0LjQ3NyAxMCAxMHMtNC40NzcgMTAtMTAgMTBTMiAxNy41MjMgMiAxMiAyIDYuNDc3IDIgMTJtMC0yQzUuMzczIDAgMCA1LjM3MyAwIDEyczUuMzczIDEyIDEyIDEyIDEyLTUuMzczIDEyLTEyUzE4LjYyNyAwIDEyIDB6Ii8+PC9zdmc+)
+![RAVEN TRACE LOGO](https://img.shields.io/badge/RavenTrace-v2.0.1-a800c6?style=for-the-badge&logo=kalilinux&logoColor=ff00f0&logoSize=auto)
 
 **Advanced OSINT Intelligence Tool**
 
@@ -356,4 +356,5 @@ This tool should only be used:
 Made with ❤️ by ME
 
 </div>
+
 
