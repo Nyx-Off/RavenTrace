@@ -13,7 +13,7 @@
 
 *Powerful OSINT reconnaissance tool for Email, Phone, and Username investigations*
 
-[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Documentation](#-documentation) • [Contributing](#-contributing)
+[Features](#-features) • [Installation](https://github.com/Nyx-Off/RavenTrace/blob/main/README_INSTALLATION.md) • [Usage](#-usage) • [Documentation](#-documentation) • [Contributing](#-contributing)
 
 </div>
 
@@ -77,21 +77,7 @@
 
 ### Quick Install
 
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/raven-trace.git
-cd raven-trace
-
-# Create virtual environment (recommended)
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Install RavenTrace
-pip install -e .
-```
+[Installation](https://github.com/Nyx-Off/RavenTrace/blob/main/README_INSTALLATION.md)
 
 ### Dependencies
 
@@ -370,3 +356,4 @@ This tool should only be used:
 Made with ❤️ by ME
 
 </div>
+
