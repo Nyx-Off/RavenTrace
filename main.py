@@ -342,7 +342,7 @@ def batch(email: str, username: str, phone: Optional[str]) -> None:
 @cli.command()
 def version() -> None:
     """Afficher la version"""
-    console.print("[bold cyan]🐦 RavenTrace v1.0.0[/bold cyan]")
+    console.print("[bold cyan]🐦 RavenTrace v2.0.1[/bold cyan]")
     console.print("[yellow]Advanced OSINT Intelligence Tool[/yellow]")
     console.print("[dim]© 2025 - Samy Nyx[/dim]")
 
