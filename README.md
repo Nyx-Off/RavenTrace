@@ -167,43 +167,57 @@ engine.export_results(email_results, format_type='html', filepath='report.html')
 ## 📁 Project Structure
 
 ```
-raven-trace/
-├── cli/                  # CLI interface modules
-│   ├── __init__.py
-│   └── interface.py      # Rich terminal UI
-├── core/                 # Core engine and validators
-│   ├── __init__.py
-│   ├── engine.py         # Main search engine
-│   ├── validators.py     # Input validation
-│   └── scrapers.py       # Web scraping utilities
-├── modules/              # Search modules
-│   ├── __init__.py
-│   ├── email_lookup.py   # Email intelligence
-│   ├── phone_lookup.py   # Phone intelligence
-│   ├── username_lookup.py # Username intelligence
-│   ├── breaches.py       # Data breach checking
-│   └── reporting.py      # Report generation
-├── sources/              # External data sources
-│   ├── __init__.py
-│   ├── public_apis.py    # Public API integrations
-│   ├── social_media.py   # Social platform searches
-│   └── data_aggregators.py # Data broker searches
-├── storage/              # Data persistence
-│   ├── __init__.py
-│   └── database.py       # SQLite cache manager
-├── utils/                # Utility functions
-│   ├── __init__.py
-│   ├── formatter.py      # Result formatting
-│   ├── logger.py         # Logging configuration
-│   └── helpers.py        # Helper functions
-├── tests/                # Unit tests
-│   └── test_core.py
-├── main.py               # Main entry point
-├── config.py             # Configuration management
-├── requirements.txt      # Python dependencies
-├── setup.py              # Package setup
-├── LICENSE               # MIT License
-└── README.md             # This file
+.
+├── cli
+│   ├── __init__.py
+│   └── interface.py
+├── config.py
+├── config.yaml
+├── core
+│   ├── engine.py
+│   ├── __init__.py
+│   ├── scrapers.py
+│   └── validators.py
+├── __init__.py
+├── install_kali_tools.sh
+├── LICENSE
+├── main.py
+├── modules
+│   ├── advanced_osint.py
+│   ├── breaches.py
+│   ├── email_lookup.py
+│   ├── __init__.py
+│   ├── kali_tools.py
+│   ├── phone_lookup.py
+│   ├── reporting.py
+│   └── username_lookup.py
+├── README_INSTALLATION.md
+├── README.md
+├── requirements.txt
+├── setup.py
+├── setup_venv.sh
+├── sources
+│   ├── data_aggregators.py
+│   ├── __init__.py
+│   ├── public_apis.py
+│   └── social_media.py
+├── storage
+│   ├── database.py
+│   └── __init__.py
+├── tests
+│   └── test_core.py
+├── utils
+│   ├── formatter.py
+│   ├── helpers.py
+│   ├── __init__.py
+│   └── logger.py
+└── venv
+    ├── bin
+    │   ├── python -> python3
+    │   ├── python3 -> /usr/bin/python3
+    │   └── python3.13 -> python3
+    └── lib64 -> lib
+
 ```
 
 ## 🔍 Data Sources
@@ -356,5 +370,6 @@ This tool should only be used:
 Made with ❤️ by ME
 
 </div>
+
 
 
