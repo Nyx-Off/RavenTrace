@@ -2,7 +2,8 @@
 
 # RavenTrace
 
-![Logo](https://github.com/Nyx-Off/RavenTrace/blob/main/logo.png)
+
+<img src="https://github.com/Nyx-Off/RavenTrace/blob/main/logo.png" alt="Logo" width="100" height="100">
 
 ![RAVEN TRACE LOGO](https://img.shields.io/badge/Raven%20Trace-v2.0.1-a800c6?style=for-the-badge)
 
@@ -372,6 +373,7 @@ This tool should only be used:
 Made with ❤️ by ME
 
 </div>
+
 
 
 
