@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![RAVEN TRACE LOGO](https://img.shields.io/badge/RavenTrace-v2.0.1-a800c6?style=for-the-badge&logo=kalilinux&logoColor=ff00f0&logoSize=auto)
+![RAVEN TRACE LOGO](https://img.shields.io/badge/Raven%20Trace-v2.0.1-a800c6?style=for-the-badge)
 
 **Advanced OSINT Intelligence Tool**
 
@@ -370,6 +370,7 @@ This tool should only be used:
 Made with ❤️ by ME
 
 </div>
+
 
 
 
