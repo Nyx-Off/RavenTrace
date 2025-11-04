@@ -1,9 +1,9 @@
 #!/bin/bash
-# Installation des outils OSINT pour Kali Linux
-# Compatible avec les nouvelles versions de Kali (PEP 668)
+# Script d'installation complète de RavenTrace
+# Combine l'environnement virtuel et les outils Kali en un seul script
 
 echo "╔══════════════════════════════════════════════════════════╗"
-echo "║     Installation des outils OSINT pour RavenTrace        ║"
+echo "║          Installation complète de RavenTrace             ║"
 echo "╚══════════════════════════════════════════════════════════╝"
 echo ""
 
@@ -86,25 +86,40 @@ else
     echo -e "${GREEN}  ✓ PhoneInfoga déjà installé${NC}"
 fi
 
-# Vérifier si on est dans un environnement virtuel
-if [[ "$VIRTUAL_ENV" != "" ]]; then
-    echo -e "${GREEN}[+] Environnement virtuel détecté${NC}"
-    echo -e "${GREEN}[+] Installation des dépendances Python dans le venv...${NC}"
-    pip install --upgrade pip
-    pip install -r requirements.txt
+# Créer l'environnement virtuel si il n'existe pas
+if [ ! -d "venv" ]; then
+    echo -e "${GREEN}[+] Création de l'environnement virtuel...${NC}"
+    python3 -m venv venv
 else
-    echo ""
-    echo -e "${YELLOW}╔══════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${YELLOW}║                    IMPORTANT                              ║${NC}"
-    echo -e "${YELLOW}╚══════════════════════════════════════════════════════════╝${NC}"
-    echo ""
-    echo -e "${YELLOW}Pour installer les dépendances Python, exécutez :${NC}"
-    echo ""
-    echo -e "${GREEN}  python3 -m venv venv${NC}"
-    echo -e "${GREEN}  source venv/bin/activate${NC}"
-    echo -e "${GREEN}  pip install -r requirements.txt${NC}"
-    echo ""
+    echo -e "${YELLOW}[!] Environnement virtuel déjà existant${NC}"
 fi
+
+# Activer l'environnement virtuel
+echo -e "${GREEN}[+] Activation de l'environnement virtuel...${NC}"
+source venv/bin/activate
+
+# Mettre à jour pip
+echo -e "${GREEN}[+] Mise à jour de pip...${NC}"
+pip install --upgrade pip
+
+# Installer les dépendances Python
+echo -e "${GREEN}[+] Installation des dépendances Python...${NC}"
+pip install -r requirements.txt
+
+# Installer les dépendances OSINT optionnelles
+echo -e "${GREEN}[+] Installation des modules OSINT optionnels...${NC}"
+
+# Essayer d'installer les modules OSINT un par un
+OSINT_MODULES=(
+    "holehe"
+    "socialscan"
+    "pwnedpasswords"
+)
+
+for module in "${OSINT_MODULES[@]}"; do
+    echo -e "${YELLOW}  → Tentative d'installation de $module...${NC}"
+    pip install $module 2>/dev/null && echo -e "${GREEN}    ✓ $module installé${NC}" || echo -e "${RED}    ✗ $module non disponible${NC}"
+done
 
 echo ""
 echo -e "${GREEN}╔══════════════════════════════════════════════════════════╗${NC}"
@@ -124,5 +139,7 @@ command -v whatweb &> /dev/null && echo -e "  ${GREEN}✓${NC} WhatWeb"
 command -v nmap &> /dev/null && echo -e "  ${GREEN}✓${NC} Nmap"
 
 echo ""
-echo -e "${GREEN}Lancez 'python3 main.py interactive' pour démarrer RavenTrace${NC}"
+echo -e "${GREEN}Pour lancer RavenTrace:${NC}"
+echo -e "  ${YELLOW}source venv/bin/activate${NC}  (si pas déjà activé)"
+echo -e "  ${YELLOW}python3 main.py interactive${NC}"
 echo ""
