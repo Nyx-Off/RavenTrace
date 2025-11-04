@@ -76,10 +76,49 @@
 - Python 3.8 or higher
 - pip package manager
 - Git
+- Kali Linux (recommended) or similar Linux distribution
 
 ### Quick Install
 
-[Installation](https://github.com/Nyx-Off/RavenTrace/blob/main/README_INSTALLATION.md)
+Run the automated installation script:
+
+```bash
+# Clone the repository
+git clone https://github.com/Nyx-Off/RavenTrace.git
+cd RavenTrace
+
+# Run the complete installation script
+./install.sh
+```
+
+The script will automatically:
+- ✅ Install system dependencies and Kali tools
+- ✅ Create a Python virtual environment
+- ✅ Install all Python dependencies
+- ✅ Install OSINT tools (theHarvester, Sherlock, holehe, maigret, PhoneInfoga)
+- ✅ Set up the environment for immediate use
+
+### Manual Installation
+
+If you prefer manual setup:
+
+```bash
+# 1. Install system dependencies
+sudo apt update
+sudo apt install python3-pip python3-venv git curl whois dnsutils nmap dmitry whatweb pipx
+
+# 2. Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# 3. Install Python dependencies
+pip install -r requirements.txt
+
+# 4. Install OSINT tools (optional)
+pipx install sherlock-project
+pipx install holehe
+pipx install maigret
+```
 
 ### Dependencies
 
