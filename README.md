@@ -361,8 +361,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 pip install -e .
 
-# Run tests
-python -m pytest tests/
+# Tests have been removed for production deployment
 
 # Code formatting
 black .
