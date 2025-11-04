@@ -220,7 +220,7 @@ engine.export_results(email_results, format_type='html', filepath='report.html')
 │   ├── scrapers.py
 │   └── validators.py
 ├── __init__.py
-├── install_kali_tools.sh
+├── install.sh
 ├── LICENSE
 ├── main.py
 ├── modules
@@ -232,11 +232,9 @@ engine.export_results(email_results, format_type='html', filepath='report.html')
 │   ├── phone_lookup.py
 │   ├── reporting.py
 │   └── username_lookup.py
-├── README_INSTALLATION.md
 ├── README.md
 ├── requirements.txt
 ├── setup.py
-├── setup_venv.sh
 ├── sources
 │   ├── data_aggregators.py
 │   ├── __init__.py
