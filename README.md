@@ -243,8 +243,6 @@ engine.export_results(email_results, format_type='html', filepath='report.html')
 ├── storage
 │   ├── database.py
 │   └── __init__.py
-├── tests
-│   └── test_core.py
 ├── utils
 │   ├── formatter.py
 │   ├── helpers.py
