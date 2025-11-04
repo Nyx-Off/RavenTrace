@@ -15,7 +15,7 @@
 
 *Powerful OSINT reconnaissance tool for Email, Phone, and Username investigations*
 
-[Features](#-features) • [Installation](https://github.com/Nyx-Off/RavenTrace/blob/main/README_INSTALLATION.md) • [Usage](#-usage) • [Documentation](#-documentation) • [Contributing](#-contributing)
+[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Documentation](#-documentation) • [Contributing](#-contributing)
 
 </div>
 
